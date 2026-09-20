@@ -4,40 +4,17 @@
 using namespace std;
 
 int main() {
-    int t;
-    cin >> t;
-    
-    while (t--) {
-        int n;
-        cin >> n;
-        
-        deque<int> d;
-        for (int i = 1; i <= n; i++) d.push_back(i);
-        
-        int answer[100005];
-        int step = 1;
-        
-        while (!d.empty()) {
-            int size = d.size();
-            int moves = step % size;
-            
-            for (int i = 0; i < moves; i++) {
-                int front = d.front();
-                d.pop_front();
-                d.push_back(front);
-            }
-            
-            int pos = d.front();
-            d.pop_front();
-            answer[pos] = step;
-            
-            step++;
+    int T; cin >> T;
+    while(T--){
+        int N; cin >> N;
+        vector<int> d; // соответствует state_{i+1}
+        for(int i = N; i >= 1; i--){
+            d.insert(d.begin(), i);           // rotated = [i] + state_{i+1}
+            int m = d.size();
+            int k = i % m;                    // сколько карт переносили по кругу
+            rotate(d.begin(), d.begin() + (m - k), d.end()); // обратный поворот
         }
-        
-        for (int i = 1; i <= n; i++) {
-            cout << answer[i] << " ";
-        }
-        cout << endl;
+        for(int i = 0; i < N; i++) cout << d[i] << " \n"[i == N-1];
     }
     
     return 0;
